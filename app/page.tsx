@@ -1,13 +1,36 @@
 "use client";
 
+import Header from "@/components/grid/header";
+import TranslateScroll from "@/components/scroll/translateScroll";
 import { Button } from "@/components/ui/button";
-import { Grip } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { ChevronLeft, ChevronRight, Grip } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 
 export default function Home() {
+  const router = useRouter();
   const translateRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
   const movingX = 500;
+
+  const projects = [
+    {
+      title: "강아지 밥주기",
+      info: "자동으로 강아지 밥주는 IOT",
+      color: "bg-red-100",
+    },
+    {
+      title: "맛집 추천 어플",
+      info: "우리동네 맛집을 알려주는 서비스",
+      color: "bg-blue-100",
+    },
+    {
+      title: "강아지 지도 어플",
+      info: "강아지 동반 지도 표시",
+      color: "bg-yellow-100",
+    },
+  ];
 
   const disabledNext = useMemo(() => {
     if (!translateRef.current) {
@@ -32,37 +55,10 @@ export default function Home() {
 
   return (
     <div className="">
-      <header className="flex justify-center h-[64px]">
-        <div className="w-full max-w-[1280px] flex justify-between items-center">
-          <div className="font-bold">Logo</div>
-          <div className="flex space-x-4">
-            <Button variant="ghost">ABOUT</Button>
-            <Button variant="ghost">HISTORY</Button>
-            <Button variant="ghost">PROJECT</Button>
-            <Button variant="ghost">ALGORITHM</Button>
-            <Button variant="secondary">
-              <div className="font-bold">Today I Learned</div>
-            </Button>
-          </div>
-          <div>
-            <Grip></Grip>
-          </div>
-        </div>
-      </header>
+      <Header />
 
-      <div>
-        {/* <section className="w-full flex justify-center bg-slate-100 h-[720px]">
-          <div className="w-full max-w-[1280px] bg-red-100 space-y-10 flex items-end">
-            <div className="w-80 text-2xl font-semibold bg-blue-200 break-keep py-10">
-              작은 기술이라도 선하게 쓰이면 세상이 달라진다는 믿음.
-              카카오임팩트가 존재하는 이유입니다.
-            </div>
-            <div className="flex-auto"></div>
-            <div className="w-200 h-full bg-amber-300">이미지 예시</div>
-          </div>
-        </section> */}
-
-        {/* <section className="w-full flex justify-center bg-slate-200 h-[720px]">
+      <div className="space-y-12">
+        <section className="w-full flex justify-center bg-slate-200 h-[720px]">
           <div className="w-full max-w-[1280px] relative">
             <div className="w-80 text-4xl font-semibold break-keep py-10 absolute bottom-[8px] z-10">
               작은 기술이라도 선하게 쓰이면 세상이 달라진다는 믿음.
@@ -78,47 +74,15 @@ export default function Home() {
               ></video>
             </div>
           </div>
-        </section> */}
-        {/* <section className="w-full flex justify-center bg-slate-200 h-[720px]">
-          <div className="w-full max-w-[1280px] relative">
-            <div className="w-80 text-4xl font-semibold break-keep py-10 absolute bottom-[8px] z-10">
-              작은 기술이라도 선하게 쓰이면 세상이 달라진다는 믿음.
-              카카오임팩트가 존재하는 이유입니다.
-            </div>
-            <div className="absolute right-0">
-              <div className="relative w-[800px] h-[720px]">
-                <Image
-                  src={"/images/bitcoin.png"}
-                  alt={"dlafdaf"}
-                  fill
-                  className="object-cover object-center"
-                ></Image>
-              </div>
-            </div>
-          </div>
-        </section> */}
+        </section>
+
         <section className="w-full flex justify-center">
-          <div className="w-full max-w-[1280px] bg-red-100">
-            <Button disabled={offset >= 0} onClick={() => move("prev")}>
-              {"<"}
-            </Button>
-            <Button disabled={disabledNext} onClick={() => move("next")}>
-              {">"}
-            </Button>
-            <div
-              ref={translateRef}
-              className="w-full flex overflow-x-visible space-x-8 will-change-transform"
-              style={{
-                transform: `translateX(${offset}px)`,
-                transition: "transform .35s ease",
-              }}
-            >
-              {new Array(16).fill(0).map((_ele, i) => (
-                <div key={i} className="min-w-[300px] h-[200px] bg-slate-100">
-                  {i + 1}.카드
-                </div>
-              ))}
-            </div>
+          <div className="w-full max-w-[1280px]">
+            <TranslateScroll items={projects}>
+              <div className="text-4xl font-bold pb-4">
+                더 나은 미래를 만드는 나의 기술 이야기
+              </div>
+            </TranslateScroll>
           </div>
         </section>
       </div>
