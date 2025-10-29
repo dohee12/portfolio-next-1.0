@@ -1,5 +1,11 @@
 "use client";
-import { AlertCircleIcon, CheckCircle2Icon, PopcornIcon } from "lucide-react";
+
+import {
+  AlertCircleIcon,
+  CheckCircle2Icon,
+  PopcornIcon,
+  DotIcon,
+} from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   AlertDialog,
@@ -13,62 +19,66 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { Description } from "@radix-ui/react-alert-dialog";
+import { toast } from "@/components/system/toast";
 import AppShell from "@/components/grid/appShell";
 
-type myAlertVariant = "info" | "sucess" | "warn" | "error";
+type myAlertVariant = "info" | "success" | "warn" | "error";
 
 export default function ShadcnPage() {
-  const myAlerts = [
+  const myAlerts: { variant: myAlertVariant }[] = [
     { variant: "info" },
-    { variant: "sucess" },
+    { variant: "success" },
     { variant: "warn" },
     { variant: "error" },
   ];
 
   return (
     <AppShell>
-      <div className="p-20 space-y-12">
+      <div className="space-y-12">
         <div className="space-y-8">
-          <div className="text-3xl font-bold">Alert</div>
-          {myAlerts.map((myAlerts, i) => (
-            <Alert key={i} variant={myAlerts.variant as myAlertVariant}>
+          <div className="text-3xl font-bold"> Alert </div>
+          {myAlerts.map((myAlert, i) => (
+            <Alert key={i} variant={myAlert.variant}>
               <CheckCircle2Icon />
-              <AlertTitle>{myAlerts.variant} Alert AlertTitle</AlertTitle>
+              <AlertTitle>{myAlert.variant} Alert Title</AlertTitle>
               <AlertDescription>
-                {myAlerts.variant} Alert AlertDescription
+                {myAlert.variant} Alert AlertDescription
               </AlertDescription>
             </Alert>
           ))}
-          <Alert variant="sucess">
-            <CheckCircle2Icon />
-            <AlertTitle>Success! Your changes have been saved</AlertTitle>
-            <AlertDescription>
-              This is an alert with icon, title and description.
-            </AlertDescription>
-          </Alert>
+
           <Alert>
             <PopcornIcon />
             <AlertTitle>
               This Alert has a title and an icon. No description.
             </AlertTitle>
           </Alert>
+
           <Alert variant="destructive">
             <AlertCircleIcon />
             <AlertTitle>Unable to process your payment.</AlertTitle>
             <AlertDescription>
-              <p>Please verify your billing information and try again.</p>
-              <ul className="list-inside list-disc text-sm">
-                <li>Check your card details</li>
-                <li>Ensure sufficient funds</li>
-                <li>Verify billing address</li>
-              </ul>
+              Please verify your billing information and try again.
+              <div className="space-y-1 text-sm">
+                <div className="flex">
+                  <DotIcon></DotIcon>
+                  Check your card details
+                </div>
+                <div className="flex">
+                  <DotIcon></DotIcon>
+                  Ensure sufficient funds
+                </div>
+                <div className="flex">
+                  <DotIcon></DotIcon>
+                  Verify billing address
+                </div>
+              </div>
             </AlertDescription>
           </Alert>
         </div>
+
         <div className="space-y-8">
-          <div className="text-3xl font-bold">Alert Dialog</div>
+          <div className="text-3xl font-bold"> Alert Dialog </div>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="outline">Show Dialog</Button>
@@ -90,38 +100,55 @@ export default function ShadcnPage() {
         </div>
 
         <div className="space-y-8">
-          <div className="text-3xl font-bold">Toaster (Sonner)</div>
-          <Button onClick={() => toast("Hello World!")}>Default</Button>
-          <Button
-            onClick={() => {
-              toast.success("sccess!");
-            }}
-          >
-            Success
-          </Button>
-          <Button
-            onClick={() => {
-              toast.error("error", { description: "에러가 발생했습니다." });
-            }}
-          >
-            Error
-          </Button>
-          <Button
-            onClick={async () => {
-              await toast.promise(
-                new Promise((resolve, reject) =>
-                  setTimeout(Math.random() > 0.5 ? reject : resolve, 1500)
-                ),
-                {
-                  loading: "블로그 업로드 중입니다.",
-                  success: "블로그 업로드가 완료되었습니다",
-                  error: "네트워크 에러가 발생했습니다.",
-                }
-              );
-            }}
-          >
-            블로그 업로드
-          </Button>
+          <div className="text-3xl font-bold"> Toaster (Sonner) </div>
+          <div className="grid grid-cols-4 gap-3">
+            <Button
+              onClick={() => {
+                toast("hello!!");
+              }}
+            >
+              {" "}
+              Default{" "}
+            </Button>
+
+            <Button
+              onClick={() => {
+                toast.success("success");
+              }}
+            >
+              {" "}
+              success{" "}
+            </Button>
+
+            <Button
+              onClick={() => {
+                toast.error("에러가 발생했습니다", {
+                  description: "에러가 발생했습니다.",
+                });
+              }}
+            >
+              {" "}
+              error{" "}
+            </Button>
+
+            <Button
+              onClick={async () => {
+                await toast.promise(
+                  new Promise((resolve, reject) =>
+                    setTimeout(Math.random() > 0.5 ? reject : resolve, 1500)
+                  ),
+                  {
+                    loading: "블로그 업로드 중입니다.",
+                    success: "블로그 업로드가 완료되었습니다.",
+                    error: "네트워크 에러가 발생했습니다.",
+                  }
+                );
+              }}
+            >
+              {" "}
+              블로그 업로드{" "}
+            </Button>
+          </div>
         </div>
       </div>
     </AppShell>

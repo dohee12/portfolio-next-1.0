@@ -1,12 +1,13 @@
 "use client";
 
+import AppShell from "@/components/grid/appShell";
 import TranslateScroll from "@/components/scroll/translateScroll";
 
 export default function TilPage() {
   const links = [
     {
       title: "shadcn",
-      info: "shadcn alert, button...",
+      info: "shadcn alert, button ...",
       color: "bg-red-100",
       link: "/shadcn",
     },
@@ -24,13 +25,15 @@ export default function TilPage() {
     },
   ];
 
-  const rightPannel = { Children: <div>hello, Right Pannel</div> };
+  const rightPannel = {
+    children: <div>hello, Right Pannel</div>,
+  };
 
   return (
-    <div className="space-y-4">
+    <AppShell rightPannel={rightPannel}>
       <section className="w-full flex justify-center">
-        <div className="w-full max-w-[980px] space-y-4">
-          <TranslateScroll items={links} movingX={250}>
+        <div className="w-full min-w-[980px] max-w-[1280px] space-y-4">
+          <TranslateScroll items={links} movingX={200}>
             <div className="text-4xl font-semibold">
               오늘 배운 것을, 오늘 남기자.
             </div>
@@ -40,6 +43,6 @@ export default function TilPage() {
           </TranslateScroll>
         </div>
       </section>
-    </div>
+    </AppShell>
   );
 }
