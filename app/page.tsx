@@ -2,17 +2,10 @@
 
 import Header from "@/components/grid/header";
 import TranslateScroll from "@/components/scroll/translateScroll";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { ChevronLeft, ChevronRight, Grip } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useMemo, useRef, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
-  const translateRef = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState(0);
-  const movingX = 500;
 
   const projects = [
     {
@@ -31,27 +24,6 @@ export default function Home() {
       color: "bg-yellow-100",
     },
   ];
-
-  const disabledNext = useMemo(() => {
-    if (!translateRef.current) {
-      return false;
-    }
-
-    return translateRef.current.scrollWidth + offset - movingX <= 0;
-  }, [offset]);
-
-  const move = (dir: "prev" | "next") => {
-    if (!translateRef.current) {
-      return;
-    }
-
-    if (dir === "next" && disabledNext) {
-      return;
-    }
-
-    const delta = dir === "prev" ? 1 : -1;
-    setOffset(offset + delta * movingX);
-  };
 
   return (
     <div className="">
