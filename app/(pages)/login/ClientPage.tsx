@@ -1,5 +1,6 @@
 "use client";
 
+import KakaoLoginButton from "@/components/brand/kakaoLoginButton";
 import AppShell from "@/components/grid/appShell";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -14,7 +15,7 @@ export default function Client() {
           <Button onClick={() => router.push("/login/email")}>
             <div className="text-2xl font-semibold">이메일로 로그인</div>
           </Button>
-          <Button>카카오 로그인</Button>
+          <KakaoLoginButton />
           <Button>네이버 로그인</Button>
         </div>
       </div>

@@ -10,10 +10,13 @@ export interface ApiType {
     nickname: string,
     email: string,
     password: string,
-    repassword: string
+    repassword: string,
+    accessToken: string
   ): Promise<number>;
   isValidNickname(nickname: string): Promise<boolean>;
   loginByEmail(email: string, password: string): Promise<string>;
+  loginByKakao(code: string, origin: string): Promise<string>;
+  me(accessToken?: string): Promise<User>;
 
   getProjects(): Promise<Project[]>;
 }
@@ -53,37 +56,67 @@ export default function Api(): ApiType {
 
   return {
     async getUser(nickname: string) {
-      return await api.get("/get-user", {
+      return await api.get("/public/get-user", {
         params: { nickname: nickname },
       });
     },
     async getUsers(): Promise<User[]> {
-      return await api.get("/get-users");
+      return await api.get("/public/get-users");
     },
     async addUser(
       nickname: string,
       email: string,
       password: string,
-      repassword: string
+      repassword: string,
+      accessToken: string
     ) {
-      return await api.post("/add-user", {
-        nickname,
-        email,
-        password,
-        repassword,
-      });
+      return await api.post(
+        "/add-user",
+        {
+          nickname,
+          email,
+          password,
+          repassword,
+        },
+        {
+          headers: {
+            "Access-Token": accessToken,
+          },
+        }
+      );
     },
     async isValidNickname(nickname: string): Promise<boolean> {
-      return await api.get("/is-valid-nickname", {
+      return await api.get("/public/is-valid-nickname", {
         params: { nickname },
       });
     },
     async loginByEmail(email: string, password: string): Promise<string> {
-      return await api.post("/login-by-email", {
+      return await api.post("/public/login-by-email", {
         email,
         password,
       });
     },
+    async loginByKakao(code: string, origin: string): Promise<string> {
+      return await api.post("/public/login-by-kakao", {
+        code,
+        origin,
+      });
+    },
+
+    async me(accessToken?: string): Promise<User> {
+      const token = accessToken || ((getCookie("accessToken") || "") as string);
+
+      return await api.post(
+        "/me",
+        {},
+        {
+          headers: {
+            "ACCESS-TOKEN": token,
+          },
+        }
+      );
+    },
+
     async getProjects(): Promise<Project[]> {
       return await api.get("/get-projects");
     },

@@ -8,7 +8,9 @@ import { toast } from "@/components/system/toast";
 import Api from "@/lib/api";
 import { getErrorMessage } from "@/lib/apiHelper";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { setCookie } from "cookies-next";
 
 interface NicknameMessage {
   status: "success" | "error" | "before";
@@ -16,7 +18,11 @@ interface NicknameMessage {
 }
 
 export default function RegisterPage() {
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token") || "";
+
   const router = useRouter();
+
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,9 +51,16 @@ export default function RegisterPage() {
         throw new Error("비밀번호가 일치하지 않습니다.");
       }
 
-      await Api().addUser(nickname, email, password, repassword);
+      const accessToken = await Api().addUser(
+        nickname,
+        email,
+        password,
+        repassword,
+        token
+      );
+      setCookie("accessToken", accessToken);
       toast.success("회원가입이 완료되었습니다");
-      router.push("/login/email");
+      router.push("/");
     } catch (error: unknown) {
       const message = getErrorMessage(error);
       toast.error(message);
@@ -73,7 +86,7 @@ export default function RegisterPage() {
   return (
     <AppShell>
       <div className="space-y-12">
-        <div className="text-2xl font-semibold"> 회원가입 </div>
+        <div className="text-2xl font-semibold"> 회원가입 {token}</div>
         <div className="space-y-4">
           <div>
             <div className="text-xl font-semibold"> 닉네임 </div>

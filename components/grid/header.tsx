@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getCookie, deleteCookie } from "cookies-next";
+import Link from "next/link";
 
 export default function Header() {
   const router = useRouter();
@@ -32,8 +33,12 @@ export default function Header() {
           Logo
         </div>
         <div className="flex space-x-4">
-          <Button variant="ghost"> ABOUT </Button>
-          <Button variant="ghost"> HISTORY </Button>
+          <Button variant="ghost" onClick={() => router.push("/about")}>
+            ABOUT
+          </Button>
+          <Link href="/history">
+            <Button variant="ghost"> HISTORY </Button>
+          </Link>
           <Button variant="ghost" onClick={() => router.push("/project")}>
             PROJECT
           </Button>
